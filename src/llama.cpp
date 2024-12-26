@@ -64,6 +64,7 @@
 #include <locale>
 #include <map>
 #include <memory>
+#include <iostream>
 #include <mutex>
 #include <numeric>
 #include <set>
