@@ -68,6 +68,8 @@ float ggml_table_f32_f16[1 << 16];
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <stdio.h>
+#include <sys/sysinfo.h>
 #include <sys/wait.h>
 
 #if defined(__ANDROID__)
@@ -553,6 +555,14 @@ FILE * ggml_fopen(const char * fname, const char * mode) {
 
     return file;
 #else
+    struct sysinfo info;
+    if (sysinfo(&info) == 0) {
+        printf("Total RAM: %lu MB\n", info.totalram / (1024 * 1024));
+        printf("Free RAM: %lu MB\n", info.freeram / (1024 * 1024));
+        printf("Available RAM: %lu MB\n", info.freeram / (1024 * 1024)); // Adjust if cached buffers matter.
+    } else {
+        perror("sysinfo");
+    }
     return fopen(fname, mode);
 #endif
 
